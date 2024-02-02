@@ -18,6 +18,12 @@ export const CoverImageModal = () => {
     const coverImage = useCoverImage();
     const { edgestore } = useEdgeStore();
 
+    const onClose = () => {
+        setFile(undefined);
+        setIsSubmitting(false);
+        coverImage.onClose();
+    }
+
     const onChange = async (file?: File) => {
         if (file) {
             setIsSubmitting(true);
@@ -31,6 +37,8 @@ export const CoverImageModal = () => {
                 id: params.documentId as Id<"documents">,
                 coverImage: res.url
             });
+
+            onClose();
         }
     }
 
@@ -42,9 +50,12 @@ export const CoverImageModal = () => {
                         Cover Iamge
                     </h2>
                 </DialogHeader>
-                <div>
-                    TODO: Upload image
-                </div>
+                <SingleImageDropzone 
+                className=" w-full outline-none"
+                disabled={isSubmitting}
+                value={file}
+                onChange={onChange}
+                />
             </DialogContent>
         </Dialog>
     );
